@@ -36,8 +36,5 @@ setup(
         ]
     },
     entry_points={
-        'gearbox.commands':[
-            'hueyworker = tgext.huey.commands:HueyWorkerCommand',
-        ]
     }
 )

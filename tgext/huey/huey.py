@@ -3,15 +3,10 @@ from huey import RedisHuey, MemoryHuey, SqliteHuey
 
 class HueyApp:
     instance = None
+    consumer = None
     def __init__(self):
         """
         Create an Instance of MemoryHuey [Tests Only]
-        
-        Params:
-        host (str) : hostname of the Redis server.
-        port (str) : port number of the Redis server.
-        password (str) [optional] : password of the Redis server, if any
-        db (int): Redis database to use (typically 0-15, default is 0).
 
         Returns:
         MemoryHuey : Instance of MemoryHuey
@@ -22,7 +17,17 @@ class HueyApp:
 
 
     def create_consumer(self, **options):
-        return self.instance.create_consumer(**options)
+        self.consumer = self.instance.create_consumer(**options)
+    
+
+    def start_consumer(self):
+        if self.consumer != None:
+            self.consumer.start()
+
+
+    def stop_consumer(self):
+        if self.consumer != None:
+            self.consumer.stop()
         
 
 
