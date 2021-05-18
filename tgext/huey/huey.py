@@ -18,8 +18,8 @@ class HueyApp:
         self.instance = MemoryHuey('huey_app')
     
 
-    def start_consumer(self, options):
-        if self.consumer != None:
+    def start_consumer(self, **options):
+        if self.consumer == None:
             self.consumer = self.instance.create_consumer(**options)
         self.consumer.start()
         log.info('Starting Consumer')
