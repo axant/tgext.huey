@@ -1,4 +1,3 @@
-from tg import config
 from tg import hooks
 from tg.configuration import milestones
 
@@ -30,7 +29,6 @@ class SetupExtension(object):
         self.configurator = configurator
 
     def __call__(self):
-        log.info('>>> Public files path is %s' % config['paths']['static_files'])
         hooks.register('startup', self.on_startup)
 
     def on_startup(self):

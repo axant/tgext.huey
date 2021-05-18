@@ -1,4 +1,6 @@
-from huey import RedisHuey, MemoryHuey, SqliteHuey
+from huey import RedisHuey, MemoryHuey, SqliteHuey, Huey
+import logging
+log = logging.getLogger('tgext.huey')
 
 
 class HueyApp:
@@ -14,20 +16,19 @@ class HueyApp:
         if self.instance != None:
             return
         self.instance = MemoryHuey('huey_app')
-
-
-    def create_consumer(self, **options):
-        self.consumer = self.instance.create_consumer(**options)
     
 
-    def start_consumer(self):
+    def start_consumer(self, options):
         if self.consumer != None:
-            self.consumer.start()
+            self.consumer = self.instance.create_consumer(**options)
+        self.consumer.start()
+        log.info('Starting Consumer')
 
 
     def stop_consumer(self):
         if self.consumer != None:
             self.consumer.stop()
+            log.info('Stopping Consumer')
         
 
 
@@ -58,9 +59,9 @@ class SqliteHueyApp(HueyApp):
         Create an Instance of SqliteHuey
         
         Params:
-        host (str) : hostname of the Redis server.
-        port (str) : port number of the Redis server.
-        fsync (bool) : password of the Redis server, if any
+        cache_mb (int) : Cache of the database
+        filename (str) : Name of the sqlite db 
+        fsync (bool) : If the huey instance should sync the db file
 
         Returns:
         SqliteHuey : Instance of SqliteHuey
